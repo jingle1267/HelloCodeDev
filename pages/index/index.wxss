@@ -1,10 +1,8 @@
 /**index.wxss**/
-.imgcontainer{
-  height:100%;
-  width: 100vh;
-}
 .imgbg{
   width: 100%; 
-  height: 100vh;
-  background-color: #eeeeee;
+  height: 99vh;
+  margin: 0px;
+  padding: 0px;
+  background-color: #559AD7;
 }
