@@ -5,7 +5,7 @@
   ],
   "window":{
     "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#000000FF",
+    "navigationBarBackgroundColor": "#FFFFFF",
     "navigationBarTitleText": "每日一句",
     "navigationBarTextStyle": "black",
     "enablePullDownRefresh": false,

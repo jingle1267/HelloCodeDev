@@ -1,11 +1,7 @@
 /**app.wxss**/
 page {
   height:100%;
-  scroll-behavior: inherit;
-  padding: 0px 0px 0px 0px;
-  margin: 0px 0px 0px 0px;
-  background: #559AD7;
-  scroll-snap-points-y: 0px;
+  background: #1C96CA;
 }
 .container {
   height: 100vh;

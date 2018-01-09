@@ -2,6 +2,6 @@
   "window": {
     "disableScroll": false,
     "onReachBottomDistance": 0,
-    "backgroundColor": "#0F0"
+    "backgroundColor": "#000"
   }
 }

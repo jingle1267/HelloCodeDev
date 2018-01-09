@@ -16,12 +16,15 @@ Page({
     })
   },
   onLoad: function () {
-    this.onPullDownRefreash();
+    this.requestData();
   },
   onShow: function () {
-    this.onPullDownRefreash();
+    this.requestData();
   },
-  onPullDownRefreash: function () {
+  // onPullDownRefreash: function () {
+  //   this.requestData();
+  // },
+  requestData: function () {
     var that = this;
     wx.request({
       url: 'https://open.iciba.com/dsapi',
