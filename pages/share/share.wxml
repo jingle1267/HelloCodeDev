@@ -1,0 +1,5 @@
+<view>
+  <view class="page-body-wrapper">
+    <canvas canvas-id="canvas" class="canvas" bindtap="click"></canvas>
+  </view>
+</view>
