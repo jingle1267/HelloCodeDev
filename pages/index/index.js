@@ -16,7 +16,10 @@ Page({
     })
   },
   onLoad: function () {
-    this.requestData();
+    // this.requestData();
+    wx.redirectTo({
+      url: '../share/share',
+    })
   },
   onShow: function () {
     this.requestData();
