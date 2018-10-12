@@ -81,13 +81,13 @@ Page({
     ctx.save()
 
     // 画右上角几何图形
-    ctx.setLineWidth(5)
+    ctx.setLineWidth(1)
     ctx.setStrokeStyle("#079dd8")
     ctx.setFillStyle("#079dd8")
     ctx.beginPath()
-    ctx.moveTo(30, 0)
-    ctx.lineTo(screenWidth - 30, 70)
-    ctx.lineTo(screenWidth, 55)
+    ctx.moveTo(screenWidth * 100 / 640, 0)
+    ctx.lineTo(screenWidth - screenWidth * 100 / 640, screenHeight * 140 / 1000)
+    ctx.lineTo(screenWidth, screenHeight * 110 / 1000)
     ctx.lineTo(screenWidth, 0)
     ctx.fill()
     ctx.stroke()
