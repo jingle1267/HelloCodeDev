@@ -75,6 +75,11 @@ Page({
     // ctx.drawImage(this.data.background, 0, 0, screenWidth, screenHeight - 30)
     // ctx.save()
 
+    // 画白色背景
+    ctx.setFillStyle("#FFFFFF")
+    ctx.fillRect(0, 0, screenWidth, screenHeight)
+    ctx.save()
+
     // 画右上角几何图形
     ctx.setLineWidth(5)
     ctx.setStrokeStyle("#079dd8")
@@ -110,7 +115,7 @@ Page({
     ctx.save()
 
     // 画每日一句-中文
-    ctx.setFontSize(16)
+    ctx.setFontSize(14)
     ctx.setFillStyle("#7D7D7D")
     ctx.fillText(sRes.note, 15, screenHeight * 375 / 1000)
     ctx.save()
@@ -189,7 +194,7 @@ Page({
               success: function (res) {
                 // console.log("图片保存到相册成功");
                 wx.showToast({
-                  title: '保存成功，可从相册选择分享到朋友圈'
+                  title: '保存成功'
                 })
               },
               fail: function (res) {
