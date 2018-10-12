@@ -14,8 +14,6 @@ Page({
   },
   onReady: function (e) {
     console.log("onReady")
-    
-    // this.drawShare();
   },
   requestData: function () {
     var that = this;
@@ -44,6 +42,9 @@ Page({
           shareUrl: shareUrl,
           shareRes: sRes
         })
+        console.log("shareContent : " + that.data.shareContent);
+        console.log("shareTitle : " + that.data.shareTitle);
+        console.log("shareUrl : " + that.data.shareUrl);
         wx.downloadFile({
           url: shareUrl,
           success (res) {
@@ -69,8 +70,6 @@ Page({
     var qrMargin = screenHeight * 0.02
     // 小程序码路径
     var qrPath = '../../img/ic_wx_mini.jpg'
-
-    console.log("");
 
     // 画背景图
     // ctx.drawImage(this.data.background, 0, 0, screenWidth, screenHeight - 30)
@@ -103,17 +102,17 @@ Page({
     ctx.setFontSize(26)
     ctx.setFillStyle("#BBBBBB")
     console.log("shareRes : " + sRes);
-    var arr = this.txt2arr(ctx, sRes.content, screenWidth * 0.9)
+    var arr = this.txt2arr(ctx, sRes.content, screenWidth * 0.75, true)
     // console.log(arr)
     for (var i = 0; i < arr.length; i++) {
-      ctx.fillText('' + arr[i], 15, 100 + i * 28)
+      ctx.fillText('' + arr[i], 15, screenHeight * 145 / 1000 + (i + 1) * 27)
     }
     ctx.save()
 
     // 画每日一句-中文
-    ctx.setFontSize(14)
-    ctx.setFillStyle("#BFBFBF")
-    ctx.fillText(sRes.note, 15, 200)
+    ctx.setFontSize(16)
+    ctx.setFillStyle("#7D7D7D")
+    ctx.fillText(sRes.note, 15, screenHeight * 375 / 1000)
     ctx.save()
 
     // 画配图
@@ -153,7 +152,7 @@ Page({
     console.log(arr)
     var startHeight = blueHeight * 1.04
     for (var j = 0; j < arr2.length; j++) {
-      ctx.fillText('' + arr2[j], 15, startHeight + j * 16)
+      ctx.fillText('' + arr2[j], 15, startHeight + j * 18)
     }
     ctx.save()
 
@@ -173,48 +172,72 @@ Page({
     })
   },
   click: function() {
-    wx.canvasToTempFilePath({
-      canvasId: 'canvas',
-      success: function (res) {
-        wx.saveImageToPhotosAlbum({
-          filePath: res.tempFilePath,
-          success: function(res) {
-            wx.showToast({
-              title: '保存成功，可在微信中分享',
-              icon: '',
-              image: '',
-              duration: 0,
-              mask: true,
-              success: function(res) {},
-              fail: function(res) {},
-              complete: function(res) {},
-            })
-          }
+    var that = this;
+    wx.showModal({
+      title: '提示',
+      content: '保存当前图片到相册，然后可以分享到朋友圈',
+      success: function() {
+        wx.showToast({
+          title: '图片保存中...',
         })
-        
+        wx.canvasToTempFilePath({
+          canvasId: 'canvas',
+          success: function (res) {
+            // console.log("图片保存到本地成功 " + res.tempFilePath);
+            wx.saveImageToPhotosAlbum({
+              filePath: res.tempFilePath,
+              success: function (res) {
+                // console.log("图片保存到相册成功");
+                wx.showToast({
+                  title: '保存成功，可从相册选择分享到朋友圈'
+                })
+              },
+              fail: function (res) {
+                console.log("图片保存到本地失败")
+              }
+            })
+
+          },
+          fail: function (res) {
+            console.log("保存到本地失败");
+          }
+        }, that)
       }
-    }, this)
+    })
+    
   },
   /**
-   * 文本转换为数组，数组里面分别是每行的文本内容
+   * 文本转换为数组，数组里面分别是每行的文本内容，支持英文分行
+   * 
+   * ctx Context
+   * txt 待换行的文本
+   * width 需要显示文本的最大宽度
+   * isEng 是否是英文
    */
-  txt2arr: function (ctx, txt, width) {
-    var chr = txt.split("");
+  txt2arr: function (ctx, txt, width, isEng) {
+    var chr = txt.split(isEng ? " " : "");
     var temp = "";
     var row = [];
 
-    for (var i = 0; i < txt.length; i++) {
+    for (var i = 0; i < chr.length; i++) {
       if (ctx.measureText(temp).width < width) {
         ;
-      }
-      else {
+      } else {
         row.push(temp);
         temp = "";
       }
-      temp += txt[i];
+      temp += chr[i];
+      temp += (isEng ? " " : "");
     }
 
     row.push(temp);
     return row;
+  },
+  onShareAppMessage: function(res) {
+    var that = this;
+    console.log("shareContent : " + that.data.shareContent);
+    return {
+      title: that.data.shareContent
+    }
   }
 })
