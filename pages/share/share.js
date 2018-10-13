@@ -107,7 +107,7 @@ Page({
     ctx.setFontSize(26)
     ctx.setFillStyle("#BBBBBB")
     console.log("shareRes : " + sRes);
-    var arr = this.txt2arr(ctx, sRes.content, screenWidth * 0.75, true)
+    var arr = this.txt2arr(ctx, sRes.content, screenWidth * 0.9, true)
     // console.log(arr)
     for (var i = 0; i < arr.length; i++) {
       ctx.fillText('' + arr[i], 15, screenHeight * 145 / 1000 + (i + 1) * 27)
@@ -181,32 +181,29 @@ Page({
     wx.showModal({
       title: '提示',
       content: '保存当前图片到相册，然后可以分享到朋友圈',
-      success: function() {
-        wx.showToast({
-          title: '图片保存中...',
-        })
-        wx.canvasToTempFilePath({
-          canvasId: 'canvas',
-          success: function (res) {
-            // console.log("图片保存到本地成功 " + res.tempFilePath);
-            wx.saveImageToPhotosAlbum({
-              filePath: res.tempFilePath,
-              success: function (res) {
-                // console.log("图片保存到相册成功");
-                wx.showToast({
-                  title: '保存成功'
-                })
-              },
-              fail: function (res) {
-                console.log("图片保存到本地失败")
-              }
-            })
-
-          },
-          fail: function (res) {
-            console.log("保存到本地失败");
-          }
-        }, that)
+      success: function(res) {
+        if (res.confirm) {
+          wx.canvasToTempFilePath({
+            canvasId: 'canvas',
+            success: function (res) {
+              wx.saveImageToPhotosAlbum({
+                filePath: res.tempFilePath,
+                success: function (res) {
+                  // console.log("图片保存到相册成功");
+                  wx.showToast({
+                    title: '保存成功'
+                  })
+                },
+                fail: function (res) {
+                  console.log("图片保存到本地失败")
+                }
+              })
+            },
+            fail: function (res) {
+              console.log("保存到本地失败");
+            }
+          }, that)
+        }
       }
     })
     
@@ -225,14 +222,19 @@ Page({
     var row = [];
 
     for (var i = 0; i < chr.length; i++) {
-      if (ctx.measureText(temp).width < width) {
-        ;
+      var cur = chr[i];
+      var tempWidth = ctx.measureText(temp).width;
+      var curWidth = ctx.measureText(cur).width;
+      // 需要考虑英文换行问题
+      if (tempWidth + curWidth < width) {
+        temp += cur;
+        temp += (isEng ? " " : "");
       } else {
         row.push(temp);
         temp = "";
+        temp += cur;
+        temp += (isEng ? " " : "");
       }
-      temp += chr[i];
-      temp += (isEng ? " " : "");
     }
 
     row.push(temp);
