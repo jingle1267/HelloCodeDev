@@ -104,20 +104,25 @@ Page({
     ctx.save()
 
     // 画每日一句-英文
-    ctx.setFontSize(26)
+    ctx.setFontSize(24)
     ctx.setFillStyle("#BBBBBB")
     console.log("shareRes : " + sRes);
     var arr = this.txt2arr(ctx, sRes.content, screenWidth * 0.9, true)
     // console.log(arr)
     for (var i = 0; i < arr.length; i++) {
-      ctx.fillText('' + arr[i], 15, screenHeight * 145 / 1000 + (i + 1) * 27)
+      ctx.fillText('' + arr[i], 15, screenHeight * 145 / 1000 + (i + 1) * 26)
     }
     ctx.save()
 
     // 画每日一句-中文
     ctx.setFontSize(14)
     ctx.setFillStyle("#7D7D7D")
-    ctx.fillText(sRes.note, 15, screenHeight * 375 / 1000)
+    // ctx.fillText(sRes.note, 15, screenHeight * 375 / 1000)
+    var arrZH = this.txt2arr(ctx, sRes.note, screenWidth * 0.9, false)
+    // console.log(arrCH)
+    for (var k = 0; k < arrZH.length; k++) {
+      ctx.fillText('' + arrZH[k], 15, screenHeight * 345 / 1000 + (k + 1) * 16)
+    }
     ctx.save()
 
     // 画配图
