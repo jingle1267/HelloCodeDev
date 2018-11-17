@@ -10,7 +10,7 @@ Page({
     shareUrl: ''
   },
   //事件处理函数
-  bindViewTap: function() {
+  bindViewTap: function () {
     wx.navigateTo({
       url: '../logs/logs'
     })
@@ -57,6 +57,6 @@ Page({
     }
   },
   share: function () {
-    
+
   }
 })

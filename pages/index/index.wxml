@@ -1,2 +1,2 @@
 <!--index.wxml-->
-<image class = "imgbg" bindtap="share" azy-load="false" src="{{background}}"></image>
+<image class="imgbg" bindtap="share" azy-load="false" src="{{background}}"></image>
