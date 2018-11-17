@@ -4,7 +4,8 @@ const app = getApp()
 
 Page({
   data: {
-    background: 'https://cdn.iciba.com/news/word/big_20180103b.jpg',
+    // background: 'https://cdn.iciba.com/news/word/big_20180103b.jpg',
+    background: '',
     shareTitle: '每日一句',
     shareContent: 'Stay hungry, stay foolish!',
     shareUrl: ''
@@ -16,10 +17,13 @@ Page({
     })
   },
   onLoad: function () {
-    this.requestData();
+    // this.requestData();
+    wx.redirectTo({
+      url: '../share/share',
+    })
   },
   onShow: function () {
-    this.requestData();
+    // this.requestData();
   },
   // onPullDownRefreash: function () {
   //   this.requestData();
