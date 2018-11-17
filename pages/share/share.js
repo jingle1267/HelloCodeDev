@@ -104,13 +104,13 @@ Page({
     ctx.save()
 
     // 画每日一句-英文
-    ctx.setFontSize(24)
+    ctx.setFontSize(22)
     ctx.setFillStyle("#BBBBBB")
     console.log("shareRes : " + sRes);
     var arr = this.txt2arr(ctx, sRes.content, screenWidth * 0.9, true)
     // console.log(arr)
     for (var i = 0; i < arr.length; i++) {
-      ctx.fillText('' + arr[i], 15, screenHeight * 145 / 1000 + (i + 1) * 26)
+      ctx.fillText('' + arr[i], 15, screenHeight * 145 / 1000 + (i + 1) * 24)
     }
     ctx.save()
 
