@@ -1,5 +1,7 @@
 # 【洪谷山】每日分享
 
+[![GitHub issues](https://img.shields.io/github/issues/jingle1267/HelloCodeDev.svg)](https://github.com/jingle1267/HelloCodeDev/issues)[![GitHub license](https://img.shields.io/github/license/jingle1267/HelloCodeDev.svg)](https://github.com/jingle1267/HelloCodeDev/blob/master/LICENSE)![WX Canvas](https://img.shields.io/badge/wx-canvas-green.svg)
+
 ### 1. 基本介绍
 
 本代码库是微信小程序的一个每日分享案例。每天会中英文美句，推荐给大家，可以点击保存图片到本地，然后分享到朋友圈（小程序暂不支持直接分享到朋友圈）。主要用到的技术点就是 canvas 画图。
