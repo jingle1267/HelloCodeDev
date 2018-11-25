@@ -2,6 +2,8 @@
 
 [![GitHub issues](https://img.shields.io/github/issues/jingle1267/HelloCodeDev.svg) ](https://github.com/jingle1267/HelloCodeDev/issues)&nbsp;[![GitHub license](https://img.shields.io/github/license/jingle1267/HelloCodeDev.svg)](https://github.com/jingle1267/HelloCodeDev/blob/master/LICENSE)&nbsp;![WX Canvas](https://img.shields.io/badge/wx-canvas-green.svg)
 
+微信小程序目前仅支持分享给好友，暂不支持直接分享到朋友圈。针对分享到朋友圈这个问题，通常的做法是生成一张海报图片然后把图片分享到朋友圈。朋友圈到我们的小程序，通过长按图片识别图中小程序码实现。
+
 ### 1. 基本介绍
 
 本代码库是微信小程序的一个每日分享案例。每天会中英文美句，推荐给大家，可以点击保存图片到本地，然后分享到朋友圈（小程序暂不支持直接分享到朋友圈）。主要用到的技术点就是 canvas 画图。
