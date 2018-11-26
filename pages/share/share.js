@@ -4,10 +4,17 @@ Page({
     shareTitle: '每日一句',
     shareContent: 'Stay hungry, stay foolish!',
     shareUrl: '',
-    shareRes:{}
+    shareRes:{},
+    screenWidth: 720,
+    screenHeight: 1080,
+    blueHeight: 500
   },
   onLoad: function () {
     this.requestData();
+    this.setData({
+      screenWidth: wx.getSystemInfoSync().windowWidth,
+      screenHeight: wx.getSystemInfoSync().screenHeight
+    })
   },
   onShow: function () {
     //this.requestData();
@@ -61,23 +68,41 @@ Page({
     })
   },
   drawShare: function (imgPath, sRes) {
-    var ctx = wx.createContext()
-    var screenWidth = wx.getSystemInfoSync().windowWidth
-    var screenHeight = wx.getSystemInfoSync().screenHeight
-    // 小程序码宽度
-    var qrWidth = 80
-    // 小程序码边距
-    var qrMargin = screenHeight * 0.02
-    // 小程序码路径
-    var qrPath = '../../img/ic_wx_mini.jpg'
+    var that = this
+    var ctx = wx.createCanvasContext('canvas')
+    console.log('screenWidth : ' + that.data.screenWidth)
+    console.log('screenHeight : ' + that.data.screenHeight)
 
     // 画背景图
     // ctx.drawImage(this.data.background, 0, 0, screenWidth, screenHeight - 30)
     // ctx.save()
 
+    this.drawDate(ctx, sRes)
+
+    // this.drawMemo(ctx, sRes)
+
+    // this.drawPic(ctx)
+
+    // this.drawQR(ctx, sRes)
+
+    if (true) {
+      return;
+    }
+
+    
+
+    
+
+    // wx.drawCanvas({
+    //   canvasId: 'canvas',
+    //   actions: ctx.getActions()
+    // })
+  },
+  drawDate: function(ctx, sRes) {
+    var that = this
     // 画白色背景
     ctx.setFillStyle("#FFFFFF")
-    ctx.fillRect(0, 0, screenWidth, screenHeight)
+    ctx.fillRect(0, 0, that.data.screenWidth, that.data.screenHeight)
     ctx.save()
 
     // 画右上角几何图形
@@ -85,10 +110,10 @@ Page({
     ctx.setStrokeStyle("#079dd8")
     ctx.setFillStyle("#079dd8")
     ctx.beginPath()
-    ctx.moveTo(screenWidth * 100 / 640, 0)
-    ctx.lineTo(screenWidth - screenWidth * 100 / 640, screenHeight * 140 / 1000)
-    ctx.lineTo(screenWidth, screenHeight * 110 / 1000)
-    ctx.lineTo(screenWidth, 0)
+    ctx.moveTo(that.data.screenWidth * 100 / 640, 0)
+    ctx.lineTo(that.data.screenWidth - that.data.screenWidth * 100 / 640, that.data.screenHeight * 140 / 1000)
+    ctx.lineTo(that.data.screenWidth, that.data.screenHeight * 110 / 1000)
+    ctx.lineTo(that.data.screenWidth, 0)
     ctx.fill()
     ctx.stroke()
     ctx.closePath()
@@ -103,14 +128,24 @@ Page({
     ctx.fillText('' + (date.getMonth() + 1) + '.' + date.getFullYear(), 70, 65)
     ctx.save()
 
+    ctx.draw(true, function(){
+      console.log("callback1")
+      setTimeout(function() {
+        console.log("callback11")
+        that.drawMemo(ctx, sRes)
+      }, 500)
+    })
+  },
+  drawMemo: function (ctx, sRes) {
+    var that = this
     // 画每日一句-英文
     ctx.setFontSize(22)
     ctx.setFillStyle("#BBBBBB")
     console.log("shareRes : " + sRes);
-    var arr = this.txt2arr(ctx, sRes.content, screenWidth * 0.9, true)
+    var arr = this.txt2arr(ctx, sRes.content, that.data.screenWidth * 0.9, true)
     // console.log(arr)
     for (var i = 0; i < arr.length; i++) {
-      ctx.fillText('' + arr[i], 15, screenHeight * 145 / 1000 + (i + 1) * 24)
+      ctx.fillText('' + arr[i], 15, that.data.screenHeight * 145 / 1000 + (i + 1) * 24)
     }
     ctx.save()
 
@@ -118,49 +153,76 @@ Page({
     ctx.setFontSize(14)
     ctx.setFillStyle("#7D7D7D")
     // ctx.fillText(sRes.note, 15, screenHeight * 375 / 1000)
-    var arrZH = this.txt2arr(ctx, sRes.note, screenWidth * 0.9, false)
+    var arrZH = this.txt2arr(ctx, sRes.note, that.data.screenWidth * 0.9, false)
     // console.log(arrCH)
     for (var k = 0; k < arrZH.length; k++) {
-      ctx.fillText('' + arrZH[k], 15, screenHeight * 345 / 1000 + (k + 1) * 16)
+      ctx.fillText('' + arrZH[k], 15, that.data.screenHeight * 345 / 1000 + (k + 1) * 16)
     }
     ctx.save()
-
+    ctx.draw(true, function() {
+      console.log("callback2")
+      setTimeout(function () {
+        that.drawPic(ctx, sRes)
+      }, 500)
+    })
+  },
+  drawPic: function (ctx, sRes) {
+    console.log("callback23")
+    var that = this
     // 画配图
-    var picY = screenHeight * 0.4
-    var picHeight = screenWidth * 580 / 938
-    ctx.drawImage(this.data.background, 0, picY, screenWidth, picHeight)
+    var picY = that.data.screenHeight * 0.4
+    var picHeight = that.data.screenWidth * 580 / 938
+    ctx.drawImage(this.data.background, 0, picY, that.data.screenWidth, picHeight)
     ctx.save()
 
     // 画渐变
-    var grd = ctx.createLinearGradient(screenWidth / 2, picY - 2, screenWidth / 2, picY * 1.3);
+    var grd = ctx.createLinearGradient(that.data.screenWidth / 2, picY - 2, that.data.screenWidth / 2, picY * 1.3);
     grd.addColorStop(0, 'rgba(255, 255, 255, 1)')
     grd.addColorStop(1, 'rgba(255, 255, 255, 0)')
     ctx.setFillStyle(grd)
-    ctx.fillRect(0, picY - 2, screenWidth, picHeight / 3)
+    ctx.fillRect(0, picY - 2, that.data.screenWidth, picHeight / 3)
     ctx.save()
 
     // 画底部梯形
-    var blueHeight = picY + picHeight;
+    // blueHeight 蓝色提醒的高度，画二维码会用到这个高度值
+    that.setData({
+      blueHeight: picY + picHeight
+    })
+    var blueHeight = that.data.blueHeight;
     ctx.setLineWidth(5)
     ctx.setStrokeStyle("#079dd8")
     ctx.setFillStyle("#079dd8")
     ctx.beginPath()
-    ctx.moveTo(0, blueHeight - screenWidth * 70 / 640)
-    ctx.lineTo(screenWidth, blueHeight)
-    ctx.lineTo(screenWidth, screenHeight)
-    ctx.lineTo(0, screenHeight)
-    ctx.lineTo(0, blueHeight - screenWidth * 70 / 640)
+    ctx.moveTo(0, blueHeight - that.data.screenWidth * 70 / 640)
+    ctx.lineTo(that.data.screenWidth, blueHeight)
+    ctx.lineTo(that.data.screenWidth, that.data.screenHeight)
+    ctx.lineTo(0, that.data.screenHeight)
+    ctx.lineTo(0, blueHeight - that.data.screenWidth * 70 / 640)
     ctx.fill()
     ctx.stroke()
     ctx.closePath()
     ctx.save()
-
+    ctx.draw(true, function () {
+      console.log("callback3")
+      setTimeout(function () {
+        that.drawQR(ctx, sRes)
+      }, 500)
+    })
+  },
+  drawQR: function (ctx, sRes) {
+    var that = this
+    // 小程序码宽度
+    var qrWidth = 80
+    // 小程序码边距
+    var qrMargin = that.data.screenHeight * 0.02
+    // 小程序码路径
+    var qrPath = '../../img/ic_wx_mini.jpg'
     // 画小编的话
     ctx.setFontSize(12)
     ctx.setFillStyle("#FFFFFF")
-    var arr2 = this.txt2arr(ctx, sRes.translation, screenWidth * 0.6)
-    console.log(arr)
-    var startHeight = blueHeight * 1.04
+    var arr2 = this.txt2arr(ctx, sRes.translation, that.data.screenWidth * 0.6)
+    console.log(arr2)
+    var startHeight = that.data.blueHeight * 1.04
     for (var j = 0; j < arr2.length; j++) {
       ctx.fillText('' + arr2[j], 15, startHeight + j * 18)
     }
@@ -169,16 +231,15 @@ Page({
     // 画小程序码
     ctx.setLineWidth(1)
     ctx.beginPath()
-    ctx.arc(screenWidth - qrWidth / 2 - qrMargin, screenHeight - qrWidth / 2 - qrMargin, qrWidth / 2, 0, 2 * Math.PI)
+    ctx.arc(that.data.screenWidth - qrWidth / 2 - qrMargin, that.data.screenHeight - qrWidth / 2 - qrMargin, qrWidth / 2, 0, 2 * Math.PI)
     ctx.setStrokeStyle("#ffff00")
     ctx.stroke()
     ctx.clip()
-    ctx.drawImage(qrPath, screenWidth - qrWidth - qrMargin, screenHeight - qrWidth - qrMargin, qrWidth, qrWidth)
+    ctx.drawImage(qrPath, that.data.screenWidth - qrWidth - qrMargin, that.data.screenHeight - qrWidth - qrMargin, qrWidth, qrWidth)
     ctx.save()
 
-    wx.drawCanvas({
-      canvasId: 'canvas',
-      actions: ctx.getActions()
+    ctx.draw(true, function () {
+      console.log("callback4")
     })
   },
   click: function() {
