@@ -89,10 +89,6 @@ Page({
       return;
     }
 
-    
-
-    
-
     // wx.drawCanvas({
     //   canvasId: 'canvas',
     //   actions: ctx.getActions()
@@ -133,7 +129,7 @@ Page({
       setTimeout(function() {
         console.log("callback11")
         that.drawMemo(ctx, sRes)
-      }, 500)
+      }, 200)
     })
   },
   drawMemo: function (ctx, sRes) {
@@ -163,7 +159,7 @@ Page({
       console.log("callback2")
       setTimeout(function () {
         that.drawPic(ctx, sRes)
-      }, 500)
+      }, 200)
     })
   },
   drawPic: function (ctx, sRes) {
@@ -206,7 +202,7 @@ Page({
       console.log("callback3")
       setTimeout(function () {
         that.drawQR(ctx, sRes)
-      }, 500)
+      }, 200)
     })
   },
   drawQR: function (ctx, sRes) {
