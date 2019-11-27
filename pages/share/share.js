@@ -39,6 +39,8 @@ Page({
         // var shareUrl = '' + res.data.fenxiang_img
         var shareUrl = '' + res.data.picture2
         console.log("shareUrl 1: " + shareUrl)
+        // http://cdn.iciba.com/news/word/http://cdn.iciba.com/news/word/big_20191127b.jpg
+        shareUrl = shareUrl.toLocaleLowerCase().replace('http://cdn.iciba.com/news/word/http://cdn.iciba.com/news/word/', 'http://cdn.iciba.com/news/word/')
         shareUrl = shareUrl.toLocaleLowerCase().replace('http:', 'https:')
         console.log("shareUrl 2: " + shareUrl)
         var sRes = res.data
@@ -55,12 +57,15 @@ Page({
         wx.downloadFile({
           url: shareUrl,
           success (res) {
+            console.log(res)
             if (res.statusCode == 200) {
               console.log("tmp file url : " + res.tempFilePath)
               that.setData({
                 background: res.tempFilePath
               })
               that.drawShare(res.tempFilePath, sRes)
+            } else {
+              console.log('Download image error.')
             }
           }
         })
