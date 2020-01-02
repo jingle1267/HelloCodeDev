@@ -5,6 +5,7 @@ let time = 0;//从按下到松开共多少时间*100
 let dateArr = [];
 let curDateIndex = 100;
 var ctx;
+let showToast = true;
 
 Page({
   data: {
@@ -20,11 +21,13 @@ Page({
   onLoad: function () {
     console.log("onLoad()");
     this.initDateArr();
-    this.requestData();
+    wx.startPullDownRefresh();
+    
     this.setData({
       screenWidth: wx.getSystemInfoSync().windowWidth,
       screenHeight: wx.getSystemInfoSync().screenHeight
     })
+   
   },
   onShow: function () {
     //this.requestData();
@@ -112,10 +115,14 @@ Page({
         console.log("shareContent : " + that.data.shareContent);
         console.log("shareTitle : " + that.data.shareTitle);
         console.log("shareUrl : " + that.data.shareUrl);
+        wx.showLoading({
+          title: '拼命加载中...'
+        })
         wx.downloadFile({
           url: shareUrl,
           success (res) {
             console.log(res)
+            wx.hideLoading()
             if (res.statusCode == 200) {
               console.log("tmp file url : " + res.tempFilePath)
               that.setData({
@@ -330,6 +337,13 @@ Page({
     ctx.drawImage(qrPath, that.data.screenWidth - qrWidth - qrMargin, that.data.screenHeight - qrWidth - qrMargin, qrWidth, qrWidth)
 
     ctx.draw(true, function () {
+      if (showToast) {
+        wx.showToast({
+          title: '左右滑动有惊喜哟~~',
+          icon: 'none'
+        })
+        showToast = false
+      }
       // console.log("callback4")
     })
   },
