@@ -2,5 +2,5 @@
   <view class="page-body-wrapper">
     <canvas canvas-id="canvas" class="canvas" ></canvas>
   </view>
-  <button class="btn" open-type="writePhotosAlbum" bindtap="click"></button>
+  <button class="btn" open-type="writePhotosAlbum" bindtap="click" bindtouchstart="touchStart" bindtouchend="touchEnd" ></button>
 </view>

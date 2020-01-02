@@ -11,6 +11,8 @@
 	"libVersion": "1.7.0",
 	"appid": "wxf93898d830b1e109",
 	"projectname": "HelloCodeDev",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,

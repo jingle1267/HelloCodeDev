@@ -1,17 +1,18 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
     "pages/logs/logs",
     "pages/share/share"
   ],
-  "window":{
+  "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#FFFFFF",
     "navigationBarTitleText": "每日一句",
     "navigationBarTextStyle": "black",
     "enablePullDownRefresh": false,
     "onReachBottomDistance": 0,
-    "backgroundColor": "#0F0",
+    "backgroundColor": "#fff",
     "navigationStyle": "custom"
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

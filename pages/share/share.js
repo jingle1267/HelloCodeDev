@@ -1,3 +1,8 @@
+let touchDotX = 0;//X按下时坐标
+let touchDotY = 0;//y按下时坐标
+let interval;//计时器
+let time = 0;//从按下到松开共多少时间*100
+
 Page({
   data: {
     background: 'https://cdn.iciba.com/news/word/big_20180103b.jpg',
@@ -22,6 +27,12 @@ Page({
   onReady: function (e) {
     console.log("onReady")
   },
+  onPullDownRefresh() {
+    // 下拉刷新
+    if (!this.loading) {
+      this.requestData();
+    }
+  },
   requestData: function () {
     var that = this;
     wx.request({
@@ -35,7 +46,8 @@ Page({
         'content-type': 'application/json'
       },
       success: function (res) {
-        console.log(res.data)
+        wx.stopPullDownRefresh()
+        // console.log(res.data)
         // var shareUrl = '' + res.data.fenxiang_img
         var shareUrl = '' + res.data.picture2
         console.log("shareUrl 1: " + shareUrl)
@@ -65,7 +77,7 @@ Page({
               })
               that.drawShare(res.tempFilePath, sRes)
             } else {
-              console.log('Download image error.')
+              console.error('Download image error.')
             }
           }
         })
@@ -124,15 +136,23 @@ Page({
     var date = new Date()
     ctx.setFontSize(40)
     ctx.setFillStyle("#FF8700")
-    ctx.fillText('' + date.getDate(), 15, 65)
+    let day = date.getDate();
+    if (day < 10) {
+      day = '0' + day;
+    }
+    let month = date.getMonth() + 1;
+    if (month < 10) {
+      month = '0' + month;
+    }
+    ctx.fillText(day, 15, 65)
     ctx.setFontSize(20)
-    ctx.fillText('' + (date.getMonth() + 1) + '.' + date.getFullYear(), 70, 65)
+    ctx.fillText(month + '.' + date.getFullYear(), 70, 65)
     ctx.save()
 
     ctx.draw(true, function(){
-      console.log("callback1")
+      // console.log("callback1")
       setTimeout(function() {
-        console.log("callback11")
+        // console.log("callback11")
         that.drawMemo(ctx, sRes)
       }, 200)
     })
@@ -146,29 +166,29 @@ Page({
     var arr = this.txt2arr(ctx, sRes.content, that.data.screenWidth * 0.9, true)
     // console.log(arr)
     for (var i = 0; i < arr.length; i++) {
-      ctx.fillText('' + arr[i], 15, that.data.screenHeight * 145 / 1000 + (i + 1) * 24)
+      ctx.fillText('' + arr[i], 15, that.data.screenHeight * 170 / 1000 + (i + 1) * 26)
     }
     ctx.save()
 
-    // 画每日一句-中文
-    ctx.setFontSize(14)
-    ctx.setFillStyle("#7D7D7D")
-    // ctx.fillText(sRes.note, 15, screenHeight * 375 / 1000)
-    var arrZH = this.txt2arr(ctx, sRes.note, that.data.screenWidth * 0.9, false)
-    // console.log(arrCH)
-    for (var k = 0; k < arrZH.length; k++) {
-      ctx.fillText('' + arrZH[k], 15, that.data.screenHeight * 345 / 1000 + (k + 1) * 16)
-    }
-    ctx.save()
+    // // 画每日一句-中文
+    // ctx.setFontSize(14)
+    // ctx.setFillStyle("#7D7D7D")
+    // // ctx.fillText(sRes.note, 15, screenHeight * 375 / 1000)
+    // var arrZH = this.txt2arr(ctx, sRes.note, that.data.screenWidth * 0.9, false)
+    // // console.log(arrCH)
+    // for (var k = 0; k < arrZH.length; k++) {
+    //   ctx.fillText('' + arrZH[k], 15, that.data.screenHeight * 345 / 1000 + (k + 1) * 16)
+    // }
+    // ctx.save()
     ctx.draw(true, function() {
-      console.log("callback2")
+      // console.log("callback2")
       setTimeout(function () {
         that.drawPic(ctx, sRes)
       }, 200)
     })
   },
   drawPic: function (ctx, sRes) {
-    console.log("callback23")
+    // console.log("callback23")
     var that = this
     // 画配图
     var picY = that.data.screenHeight * 0.4
@@ -204,7 +224,7 @@ Page({
     ctx.closePath()
     ctx.save()
     ctx.draw(true, function () {
-      console.log("callback3")
+      // console.log("callback3")
       setTimeout(function () {
         that.drawQR(ctx, sRes)
       }, 200)
@@ -215,32 +235,38 @@ Page({
     // 小程序码宽度
     var qrWidth = 80
     // 小程序码边距
-    var qrMargin = that.data.screenHeight * 0.02
+    var qrMargin = that.data.screenHeight * 0.03
     // 小程序码路径
     var qrPath = '../../img/ic_wx_mini.jpg'
     // 画小编的话
-    ctx.setFontSize(12)
+    ctx.setFontSize(14)
     ctx.setFillStyle("#FFFFFF")
-    var arr2 = this.txt2arr(ctx, sRes.translation, that.data.screenWidth * 0.6)
+    // var arr2 = this.txt2arr(ctx, sRes.translation, that.data.screenWidth * 0.6)
+    var arr2 = this.txt2arr(ctx, sRes.note, that.data.screenWidth * 0.6)
     console.log(arr2)
     var startHeight = that.data.blueHeight * 1.04
     for (var j = 0; j < arr2.length; j++) {
-      ctx.fillText('' + arr2[j], 15, startHeight + j * 18)
+      ctx.fillText('' + arr2[j], 15, startHeight + j * 24)
     }
     ctx.save()
 
     // 画小程序码
-    ctx.setLineWidth(1)
+    // ctx.setLineWidth(1)
+    ctx.shadowOffsetX = 0; // 阴影Y轴偏移
+    ctx.shadowOffsetY = 0; // 阴影X轴偏移
+    ctx.shadowBlur = 14; // 模糊尺寸
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)'; // 颜色
     ctx.beginPath()
     ctx.arc(that.data.screenWidth - qrWidth / 2 - qrMargin, that.data.screenHeight - qrWidth / 2 - qrMargin, qrWidth / 2, 0, 2 * Math.PI)
-    ctx.setStrokeStyle("#ffff00")
+    ctx.setStrokeStyle("#ffffff")
+    
     ctx.stroke()
     ctx.clip()
     ctx.drawImage(qrPath, that.data.screenWidth - qrWidth - qrMargin, that.data.screenHeight - qrWidth - qrMargin, qrWidth, qrWidth)
     ctx.save()
 
     ctx.draw(true, function () {
-      console.log("callback4")
+      // console.log("callback4")
     })
   },
   click: function() {
@@ -274,6 +300,40 @@ Page({
       }
     })
     
+  },
+  // 触摸开始事件
+  touchStart: function (e) {
+    console.log("touchStart");
+    touchDotX = e.touches[0].pageX; // 获取触摸时的原点
+    touchDotY = e.touches[0].pageY;
+    // 使用js计时器记录时间    
+    interval = setInterval(function () {
+      time++;
+    }, 100);
+  },
+  // 触摸结束事件
+  touchEnd: function (e) {
+    console.log("touchEnd");
+    let touchMoveX = e.changedTouches[0].pageX;
+    let touchMoveY = e.changedTouches[0].pageY;
+    let tmX = touchMoveX - touchDotX;
+    let tmY = touchMoveY - touchDotY;
+    if (time < 20) {
+      let absX = Math.abs(tmX);
+      let absY = Math.abs(tmY);
+      if (absX > 2 * absY) {
+        if (tmX < 0) {
+          console.log("左滑=====")
+        } else {
+          console.log("右滑=====")
+        }
+      }
+      if (absY > absX * 2 && tmY < 0) {
+        console.log("上滑动=====")
+      }
+    }
+    clearInterval(interval); // 清除setInterval
+    time = 0;
   },
   /**
    * 文本转换为数组，数组里面分别是每行的文本内容，支持英文分行
