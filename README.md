@@ -1,4 +1,4 @@
-# 【洪谷山】每日分享
+# 【洪谷】每日分享
 
 [![GitHub issues](https://img.shields.io/github/issues/jingle1267/HelloCodeDev.svg) ](https://github.com/jingle1267/HelloCodeDev/issues)&nbsp;[![GitHub license](https://img.shields.io/github/license/jingle1267/HelloCodeDev.svg)](https://github.com/jingle1267/HelloCodeDev/blob/master/LICENSE)&nbsp;![WX Canvas](https://img.shields.io/badge/wx-canvas-green.svg)
 
